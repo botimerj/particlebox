@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <shader.h>
 #include <texture.h>
+#include <cmath>
 
 class Object{
 

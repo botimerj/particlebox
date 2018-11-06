@@ -67,11 +67,12 @@ void Object::update(float dt){
     
     // Static dont go outside window
     float ar = 800.0/600.0;
-    if(this->pos.x+this->size.x > ar || this->pos.x-this->size.x < 0){
-        this->vel.x = -this->vel.x;
-    }
-    if(this->pos.y+this->size.y > 1.0 || this->pos.y-this->size.y < 0){
-        this->vel.y = -this->vel.y;
-    }
+    if(this->pos.x+this->size.x > ar)
+        this->vel.x = -abs(this->vel.x);
+    if(this->pos.x-this->size.x < -ar)
+        this->vel.x = abs(this->vel.x);
+    if(this->pos.y+this->size.y > 1.0 )
+        this->vel.y = -abs(this->vel.y);
+    if(this->pos.y-this->size.y < -1.0)
+        this->vel.y = abs(this->vel.y);
 }
-

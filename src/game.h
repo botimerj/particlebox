@@ -10,6 +10,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/norm.hpp>
+#include <glm/geometric.hpp>
 
 
 #include <shader.h>
@@ -20,25 +23,40 @@
 
 class GameState{
 public:
-   // Static things
-   Shader objShader;
-   Texture2D objTexture;
+    // Static things
+    Shader objShader;
+    Texture2D objTexture;
 
-   // Dynamic things
-   bool pause;
-   float aspect_ratio;
-   glm::mat4 projection;
-   
-   int numObj;
-   Object obj;
+    // Dynamic things
+    float aspect_ratio;
+    glm::mat4 projection;
 
-   GameState(float aspect_ratio); 
-   ~GameState();
+    bool pause;
+    int numObj;
+    int maxObj;
+    Object * obj;
+
+    GameState(float aspect_ratio); 
+    ~GameState();
+
+    void add_obj(glm::vec2 pos,
+                 glm::vec2 size,
+                 glm::vec2 vel,
+                 glm::vec3 color);
+    void add_obj_rand();
+
+    void physics(float dt);
+    void render();
+
 
     void processInput(GLFWwindow *window);
     float randf(float a, float b);
 
+    private: 
+    void collisions();
 
 };
+
+
 
 #endif

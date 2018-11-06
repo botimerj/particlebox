@@ -9,6 +9,10 @@ all: pbox
 pbox: 
 	$(CC) $(INCLUDE) $(SRC) main.cpp -o main $(LINK) 
 
+physics:
+	$(CC) $(INCLUDE) physics.cpp -o physics 
+
+
 clean:
-	rm main 
-.PHONY: all pbox 
+	rm main physics
+.PHONY: all pbox physics

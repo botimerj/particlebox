@@ -17,8 +17,8 @@
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-//void processInput(GLFWwindow *window);
-//float randf(float a, float b);
+void create_objects(GameState & gs);
+void test_collision(GameState & gs);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -60,21 +60,9 @@ int main()
 
     float ar = static_cast<float>(SCR_WIDTH)/static_cast<float>(SCR_HEIGHT);
     GameState gs(ar);
+    create_objects(gs);
+    //test_collision(gs);
 
-    /*Object obj[N];
-    for(int i = 0; i < N; i++){
-        glm::vec2 pos(randf(POS_MIN,POS_MAX),randf(POS_MIN,POS_MAX));
-        float size_in = randf(_SIZE_MIN,_SIZE_MAX);
-        glm::vec2 size(size_in,size_in);
-        glm::vec3 color(randf(COLOR_MIN,COLOR_MAX),
-                        randf(COLOR_MIN,COLOR_MAX),
-                        randf(COLOR_MIN,COLOR_MAX));
-        glm::vec2 vel(randf(VEL_MIN,VEL_MAX),randf(VEL_MIN,VEL_MAX));
-        obj[i].set(pos, size, vel, color);
-    }*/
-    //Object obj2(pos2, size2, vel2, color2);
-
-    unsigned int count = 100;
     float oldTime, curTime, dt;
     oldTime = glfwGetTime();
     // render loop
@@ -84,11 +72,6 @@ int main()
         curTime = glfwGetTime();
         dt = curTime-oldTime;
         oldTime = curTime;
-        count++;
-        if(count > 100){
-            count = 0;
-            std::cout << "dt: " << dt << std::endl;
-        }
 
         // input
         gs.processInput(window);
@@ -97,42 +80,45 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // render container
-        if(gs.pause){
-            gs.obj.update(dt);
+        if(!gs.pause){
+            gs.physics(dt);
         }
-        gs.obj.draw(gs.objShader, gs.objTexture);
-        /*for(int i = 0; i < N; i++){
-            obj[i].update(dt);
-            obj[i].draw(ourShader, tex1);
-        }*/
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // render container
+        gs.render();
+
+        // glfw: swap buffers and poll IO events 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // glfw: terminate
     glfwTerminate();
     return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react 
-/*void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        pause = !pause;
-
-}*/
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// glfw: whenever the window size changed this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void test_collision(GameState& gs){
+    gs.add_obj(glm::vec2 (0.01f,0.01f), // pos
+               glm::vec2 (0.3f,0.3f),  // size
+               glm::vec2 (0.1f,0.1f),  // vel
+               glm::vec3 (0.0f,0.0f,0.0f));
+    gs.add_obj(glm::vec2 (0.0f,0.0f), // pos
+               glm::vec2 (0.3f,0.3f),
+               glm::vec2 (-0.1f,-0.1f),
+               glm::vec3 (1.0f,1.0f,1.0f));
+}
+
+void create_objects(GameState& gs){
+    int N = 100;
+    for(int i = 0; i < N; i++){
+        gs.add_obj_rand();
+    }
 }
 
