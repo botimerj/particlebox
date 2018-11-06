@@ -19,10 +19,12 @@ public:
     Object();
     ~Object();
 
-    void draw(Shader &, Texture2D &,
-              glm::vec2,
-              glm::vec2,
-              glm::vec3);
+    void set(glm::vec2 pos,
+             glm::vec2 size,
+             glm::vec2 vel,
+             glm::vec3 color);
+
+    void draw(Shader &, Texture2D &);
 
     void update(float dt);
 };

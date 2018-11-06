@@ -1,5 +1,6 @@
 #include <stdio.h> 
 #include <stdlib.h>
+#include <cstdlib>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -16,6 +17,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+float randf(float a, float b);
 
 
 // settings
@@ -24,6 +26,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
+    srand( time(NULL));
     // glfw: initialize and configure
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -64,8 +67,6 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Create objects
-    Object obj1;
 
     // Load Texture
     int width, height, nrChannels;
@@ -74,16 +75,56 @@ int main()
     Texture2D tex1(data, width, height, true);
     stbi_image_free(data);
 
-    glm::vec2 pos1(400.0f,300.0f);
-    glm::vec2 size1(50.0f,50.0f);
-    glm::vec3 color1(0.0f,1.0f,1.0f);
-    glm::vec2 pos2(200.0f,150.0f);
-    glm::vec2 size2(20.0f,20.0f);
-    glm::vec3 color2(1.0f,0.0f,1.0f);
+    //glm::vec2 pos1(400.0f,300.0f);
+    //glm::vec2 size1(50.0f,50.0f);
+    //glm::vec3 color1(0.0f,1.0f,1.0f);
+    //glm::vec2 pos2(200.0f,150.0f);
+    //glm::vec2 size2(20.0f,20.0f);
+    //glm::vec3 color2(1.0f,0.0f,1.0f);
 
+    //glm::vec2 vel1(100.0f,120.0f);
+    //glm::vec2 vel2(90.0f,-120.0f);
+
+    // Create objects
+
+    float VEL_MIN = -200;
+    float VEL_MAX = 200;
+    float POS_MIN = 100;
+    float POS_MAX = 500;
+    float _SIZE_MIN = 5;
+    float _SIZE_MAX = 50;
+    float COLOR_MIN = 0;
+    float COLOR_MAX = 1;
+    const int N = 1000;
+    Object obj[N];
+    for(int i = 0; i < N; i++){
+        glm::vec2 pos(randf(POS_MIN,POS_MAX),randf(POS_MIN,POS_MAX));
+        float size_in = randf(_SIZE_MIN,_SIZE_MAX);
+        glm::vec2 size(size_in,size_in);
+        glm::vec3 color(randf(COLOR_MIN,COLOR_MAX),
+                        randf(COLOR_MIN,COLOR_MAX),
+                        randf(COLOR_MIN,COLOR_MAX));
+        glm::vec2 vel(randf(VEL_MIN,VEL_MAX),randf(VEL_MIN,VEL_MAX));
+        obj[i].set(pos, size, vel, color);
+    }
+    //Object obj2(pos2, size2, vel2, color2);
+
+    unsigned int count = 100;
+    float oldTime, curTime, dt;
+    oldTime = glfwGetTime();
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        // Time logic
+        curTime = glfwGetTime();
+        dt = curTime-oldTime;
+        oldTime = curTime;
+        count++;
+        if(count > 100){
+            count = 0;
+            std::cout << "dt: " << dt << std::endl;
+        }
+
         // input
         processInput(window);
 
@@ -92,8 +133,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // render container
-        obj1.draw(ourShader, tex1, pos1, size1, color1);
-        obj1.draw(ourShader, tex1, pos2, size2, color2);
+        for(int i = 0; i < N; i++){
+            obj[i].update(dt);
+            obj[i].draw(ourShader, tex1);
+        }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window);
@@ -119,3 +162,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
+
+float randf(float a, float b){
+    float random = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    float diff = b - a;
+    float r = random*diff;
+    return a + r;
+}
+
