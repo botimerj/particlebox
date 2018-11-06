@@ -1,7 +1,16 @@
 #include <shader.h>
 
-// Shader Constructor
+
+Shader::Shader(){
+    // Nothin
+}
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath){
+    this->init(vertexPath, fragmentPath);
+}
+
+// Shader init 
+void Shader::init(const char* vertexPath, const char* fragmentPath){
     std::string vertexCode;
     std::string fragmentCode;
 

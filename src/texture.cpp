@@ -1,6 +1,13 @@
 #include <texture.h> 
 
+Texture2D::Texture2D(){
+    // Do nothin
+}
 Texture2D::Texture2D(unsigned char* data, int width, int height, bool EnableAlpha){
+    this->init(data,width,height,EnableAlpha);
+}
+
+void Texture2D::init(unsigned char* data, int width, int height, bool EnableAlpha){
 
     glGenTextures(1, &this->ID);
     glBindTexture(GL_TEXTURE_2D, this->ID); 

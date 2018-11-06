@@ -6,20 +6,6 @@ Object::Object(){
     glGenVertexArrays(1, &this->VAO);
     glGenBuffers(1, &VBO);
 
-
-
-
-    /*GLfloat vertices[] = { 
-        // Pos      // Tex
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f, 
-    
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f
-    };*/
-
     float vertices[] = {
          // Loc       // TexCoord
         -1.0f,  1.0f,  0.0f, 1.0f, 
@@ -78,10 +64,13 @@ void Object::draw(Shader &shader, Texture2D &texture){
 
 void Object::update(float dt){
     this->pos = this->pos + this->vel*dt;
-    if(this->pos.x+this->size.x > 800 || this->pos.x-this->size.x < 0){
+    
+    // Static dont go outside window
+    float ar = 800.0/600.0;
+    if(this->pos.x+this->size.x > ar || this->pos.x-this->size.x < 0){
         this->vel.x = -this->vel.x;
     }
-    if(this->pos.y+this->size.y > 600 || this->pos.y-this->size.y < 0){
+    if(this->pos.y+this->size.y > 1.0 || this->pos.y-this->size.y < 0){
         this->vel.y = -this->vel.y;
     }
 }

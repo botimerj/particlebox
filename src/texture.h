@@ -15,7 +15,9 @@ class Texture2D{
 public:
     unsigned int ID;
     bool alpha;
+    Texture2D();
     Texture2D(unsigned char* data, int width, int height, bool EnableAlpha);
+    void init(unsigned char* data, int width, int height, bool EnableAlpha);
     void bind() const;
 };
 
