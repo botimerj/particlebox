@@ -10,50 +10,56 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/norm.hpp>
 #include <glm/geometric.hpp>
 
 
 #include <shader.h>
 #include <texture.h>
 #include <object.h>
+#include <collision.h>
 
 #include <stb_image/stb_image.h>
 
 class GameState{
 public:
-    // Static things
-    Shader objShader;
-    Texture2D objTexture;
+    // Drawing things
+    Shader    *shaders;
+    Texture2D *textures;
+    //Texture2D objTexture;
+    //Texture2D squareTexture;
+    //Texture2D circle_line;
 
-    // Dynamic things
     float aspect_ratio;
     glm::mat4 projection;
 
+    // Game State
     bool pause;
+
+    // Objects
     int numObj;
     int maxObj;
     Object * obj;
+    // Player id
+    unsigned int pid;
 
+
+    // Gamestate functions
     GameState(float aspect_ratio); 
     ~GameState();
+    void level1();
 
-    void add_obj(glm::vec2 pos,
-                 glm::vec2 size,
-                 glm::vec2 vel,
-                 glm::vec3 color);
-    void add_obj_rand();
+    void addObj(Object &objToAdd);
+    void addObjRand();
 
     void physics(float dt);
     void render();
 
-
     void processInput(GLFWwindow *window);
-    float randf(float a, float b);
 
     private: 
     void collisions();
+    float randf(float a, float b);
+    
 
 };
 

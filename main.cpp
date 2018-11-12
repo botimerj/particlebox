@@ -17,8 +17,8 @@
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void create_objects(GameState & gs);
-void test_collision(GameState & gs);
+//void create_objects(GameState & gs);
+//void test_collision(GameState & gs);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -60,11 +60,14 @@ int main()
 
     float ar = static_cast<float>(SCR_WIDTH)/static_cast<float>(SCR_HEIGHT);
     GameState gs(ar);
-    create_objects(gs);
+    gs.level1();
+    //create_objects(gs);
     //test_collision(gs);
 
     float oldTime, curTime, dt;
     oldTime = glfwGetTime();
+
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -104,7 +107,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void test_collision(GameState& gs){
+/*void test_collision(GameState& gs){
     gs.add_obj(glm::vec2 (0.01f,0.01f), // pos
                glm::vec2 (0.3f,0.3f),  // size
                glm::vec2 (0.1f,0.1f),  // vel
@@ -113,12 +116,27 @@ void test_collision(GameState& gs){
                glm::vec2 (0.3f,0.3f),
                glm::vec2 (-0.1f,-0.1f),
                glm::vec3 (1.0f,1.0f,1.0f));
-}
+}*/
 
-void create_objects(GameState& gs){
-    int N = 100;
+/*void create_objects(GameState& gs){
+    int N = 500;
     for(int i = 0; i < N; i++){
         gs.add_obj_rand();
     }
-}
+    gs.addObj (glm::vec2(0.5f,0.5f),
+               glm::vec2(0.1f,0.1f),
+               glm::vec2(0.0f,0.0f),
+               glm::vec3(0.0f,0.0f,1.0f),
+               false,
+               false);
+
+    // Add player
+    gs.addObj (glm::vec2(0.0f,0.0f),
+               glm::vec2(0.1f,0.1f),
+               glm::vec2(0.0f,0.0f),
+               glm::vec3(1.0f,1.0f,1.0f),
+               true,
+               true);
+}*/
+
 

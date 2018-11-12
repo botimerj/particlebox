@@ -12,7 +12,10 @@ pbox:
 physics:
 	$(CC) $(INCLUDE) physics.cpp -o physics 
 
+pat:
+	$(CC) $(INCLUDE) pat.cpp -o pat 
+
 
 clean:
-	rm main physics
-.PHONY: all pbox physics
+	rm main physics pat
+.PHONY: all pbox physics pat
