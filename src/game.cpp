@@ -187,10 +187,10 @@ void GameState::level1(){
     ball.shape = CIRCLE;
     ball.size = glm::vec2(0.02f,0.02f);
 
-    float VEL_MIN = -1.0;
-    float VEL_MAX = 1.0;
+    float VEL_MIN = -1.2;
+    float VEL_MAX = 1.2;
 
-    int N = 20;
+    int N = 500;
     for(int i = 0; i < N; i++){
         ball.pos = glm::vec2(this->randf(0.1f,this->aspect_ratio),
                              this->randf(-1.0f,1.0f));
@@ -216,7 +216,7 @@ void GameState::level1(){
     player.player = true;
     player.size = glm::vec2(0.05f,0.05f);
     player.pos = glm::vec2(-0.5f,0.5f);
-    addObj(player);
+    //addObj(player);
 
 }
 
